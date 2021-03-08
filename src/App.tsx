@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FC, FormEvent, FormEventHandler, useState } from "react";
+import { Todo } from "./Todos/Todo/Todo";
+import { Todos } from "./Todos/Todos";
+import { TodoForm } from "./TodoForm/TodoForm";
 
-function App() {
+// interface CompProps {
+//   text: string
+// }
+
+// const Comp: FC<CompProps> = props => {
+//   return <div>
+//     Text: {props.text.toUpperCase()}
+//   </div>
+// }
+
+export type TodosType = string[];
+
+const App: FC = () => {
+  const [todos, setTodos] = useState<TodosType>([]);
+  const [inputText, setInputText] = useState("");
+
+  const handleSubmit: FormEventHandler = (event) => {
+    event.preventDefault();
+
+    if (todos.includes(inputText)) {
+      alert("You can't have two same todos");
+    } else {
+      setTodos((prev) => [...prev, inputText]);
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <Comp text="aa"/> */}
+      <TodoForm
+        handleSubmit={handleSubmit}
+        inputText={inputText}
+        setInputText={setInputText}
+      />
+      <Todos todos={todos} />
     </div>
   );
-}
+};
 
 export default App;
